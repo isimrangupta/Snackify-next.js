@@ -6,18 +6,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Products = ({ allProducts }: { allProducts: any[] }) => {
+  // FIX 1: Prevent undefined array
+  const safeProducts = Array.isArray(allProducts) ? allProducts : [];
+
   const [price, setPrice] = useState(0);
   const [discount50, setDiscount50] = useState(false);
   const [discount30, setDiscount30] = useState(false);
   const [isNew, setIsNew] = useState(false);
 
-  const [filterProducts, setFliterProducts] = useState(allProducts);
+  const [filterProducts, setFliterProducts] = useState(safeProducts);
 
   useEffect(() => {
-    let result = allProducts;
+    let result = safeProducts;
 
     result = result.filter((p) => {
-      const productPrice = parseFloat(p.price.replace(/[^0-9.-]+/g, ""));
+      const productPrice = parseFloat(p.price?.replace(/[^0-9.-]+/g, "") || "0");
       return productPrice <= price;
     });
 
@@ -26,10 +29,13 @@ const Products = ({ allProducts }: { allProducts: any[] }) => {
     if (isNew) result = result.filter((p) => p.sale === "New");
 
     setFliterProducts(result);
-  }, [price, discount50, discount30, isNew, allProducts]);
+  }, [price, discount50, discount30, isNew, safeProducts]);
 
+  // FIX 2 — Prevent crash if no products
   const randomProduct =
-    allProducts[Math.floor(Math.random() * allProducts.length)];
+    safeProducts.length > 0
+      ? safeProducts[Math.floor(Math.random() * safeProducts.length)]
+      : null;
 
   const handleAddToCart = (product: any) => {
     let cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -68,7 +74,7 @@ const Products = ({ allProducts }: { allProducts: any[] }) => {
                 <div className="border-b w-full border-gray-300 pb-3 flex items-center justify-between">
                   <h2 className="text-xl Unbounded">Product Category</h2>
                   <button
-                    onClick={() => setFliterProducts(allProducts)}
+                    onClick={() => setFliterProducts(safeProducts)}
                     className="border border-gray-300 px-2 py-1 rounded cursor-pointer hover:border-gray-500 transition-all duration-300"
                   >
                     Reset
@@ -135,88 +141,89 @@ const Products = ({ allProducts }: { allProducts: any[] }) => {
                 </div>
               </div>
 
-              {/* Random Product */}
-              <div
-                key={randomProduct.Id}
-                className="product-wrap border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-all hover:border-[var(--prim-color)] cursor-pointer duration-300"
-              >
-                <div className="relative flex justify-center items-center w-full h-20">
-                  <Image
-                    src={randomProduct.image}
-                    alt={randomProduct.title}
-                    width={70}
-                    height={70}
-                    className="object-contain mt-10"
-                  />
+              {/* Random Product (SAFE) */}
+              {randomProduct && (
+                <div
+                  key={randomProduct.Id}
+                  className="product-wrap border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-all hover:border-[var(--prim-color)] cursor-pointer duration-300"
+                >
+                  {/* Image */}
+                  <div className="relative flex justify-center items-center w-full h-20">
+                    <Image
+                      src={randomProduct.image}
+                      alt={randomProduct.title}
+                      width={70}
+                      height={70}
+                      className="object-contain mt-10"
+                    />
 
-                  {/* Wishlist Button */}
-                  <div
-                    onClick={() => handleAddToWishlist(randomProduct)}
-                    className="absolute top-0 left-0 w-[50px] h-[50px] rounded-full bg-[#d4e2e4] text-[var(--prim-color)] flex justify-center items-center hover:bg-[var(--prim-color)] hover:text-white transition-all duration-300"
-                  >
-                    <i className="bi bi-balloon-heart text-xl"></i>
+                    {/* Wishlist */}
+                    <div
+                      onClick={() => handleAddToWishlist(randomProduct)}
+                      className="absolute top-0 left-0 w-[50px] h-[50px] rounded-full bg-[#d4e2e4] text-[var(--prim-color)] flex justify-center items-center hover:bg-[var(--prim-color)] hover:text-white transition-all duration-300"
+                    >
+                      <i className="bi bi-balloon-heart text-xl"></i>
+                    </div>
+
+                    {/* Badge */}
+                    <span
+                      className={`absolute off-product top-0 right-0 px-4 py-2 Merienda text-xs font-bold text-white rounded ${
+                        randomProduct.sale?.toLowerCase() === "new"
+                          ? "bg-yellow-400"
+                          : randomProduct.sale?.includes("%")
+                          ? "bg-red-500"
+                          : "opacity-0"
+                      }`}
+                    >
+                      {randomProduct.sale}
+                    </span>
                   </div>
 
-                  {/* ⭐ FIXED BADGE */}
-                  <span
-                    className={`absolute off-product top-0 right-0 px-4 py-2 Merienda text-xs font-bold text-white rounded ${
-                      randomProduct.sale?.toLowerCase() === "new"
-                        ? "bg-yellow-400"
-                        : randomProduct.sale?.includes("%")
-                        ? "bg-red-500"
-                        : "opacity-0"
-                    }`}
-                  >
-                    {randomProduct.sale}
-                  </span>
-                </div>
-
-                {/* Product information */}
-                <div className="space-y-1 product-info">
-                  <Link
-                    href={{
-                      pathname: "/UI-Components/Shop/ProductDetails",
-                      query: { id: randomProduct.Id },
-                    }}
-                    className="flex-1"
-                  >
-                    <div className="space-y-1 mt-5 product-info">
-                      <div className="flex items-center gap-2 ">
-                        <span className="text-gray-500 text-sm line-through">
-                          {randomProduct.lessprice}
+                  <div className="space-y-1 product-info">
+                    <Link
+                      href={{
+                        pathname: "/UI-Components/Shop/ProductDetails",
+                        query: { id: randomProduct.Id },
+                      }}
+                      className="flex-1"
+                    >
+                      <div className="space-y-1 mt-5 product-info">
+                        <div className="flex items-center gap-2 ">
+                          <span className="text-gray-500 text-sm line-through">
+                            {randomProduct.lessprice}
+                          </span>
+                          <span className="text-sm font-semibold">
+                            {randomProduct.price}
+                          </span>
+                          <span className="text-gray-500 text-sm">Qty</span>
+                        </div>
+                        <span className="flex items-center text-yellow-500 font-medium textsm]">
+                          <i className="bi bi-star-fill me-1">
+                            {randomProduct.review}
+                          </i>
                         </span>
-                        <span className="text-sm font-semibold">
-                          {randomProduct.price}
-                        </span>
-                        <span className="text-gray-500 text-sm">Qty</span>
+                        <h2 className="text-lg text-gray-500 font-normal Unbounded my-2 hover:text-[var(--prim-color)] transition-all duration-300">
+                          {randomProduct.title}
+                        </h2>
+                        <h6 className="text-sm text-gray-500 flex items-center gap-1">
+                          <i className="bi bi-shop text-sm text-[var(--prim-color)]"></i>{" "}
+                          By Luck Supermarket
+                        </h6>
+                        <h3 className="Unbounded text-sm text-gray-600 mt-1">
+                          Sold: {randomProduct.sold}
+                        </h3>
                       </div>
-                      <span className="flex items-center text-yellow-500 font-medium textsm]">
-                        <i className="bi bi-star-fill me-1">
-                          {randomProduct.review}
-                        </i>
-                      </span>
-                      <h2 className="text-lg text-gray-500 font-normal Unbounded my-2 hover:text-[var(--prim-color)] transition-all duration-300">
-                        {randomProduct.title}
-                      </h2>
-                      <h6 className="text-sm text-gray-500 flex items-center gap-1">
-                        <i className="bi bi-shop text-sm text-[var(--prim-color)]"></i>{" "}
-                        By Luck Supermarket
-                      </h6>
-                      <h3 className="Unbounded text-sm text-gray-600 mt-1">
-                        Sold: {randomProduct.sold}
-                      </h3>
-                    </div>
-                  </Link>
+                    </Link>
 
-                  {/* Add to Cart */}
-                  <button
-                    onClick={() => handleAddToCart(randomProduct)}
-                    className="mt-1 px-4 font-semibold text-gray-500 bg-[#b8c6c8] rounded-md text-md hover:bg-[#ae8704] hover:text-white cursor-pointer transition w-full h-9"
-                  >
-                    Add To Cart <i className="bi bi-cart"></i>
-                  </button>
+                    <button
+                      onClick={() => handleAddToCart(randomProduct)}
+                      className="mt-1 px-4 font-semibold text-gray-500 bg-[#b8c6c8] rounded-md text-md hover:bg-[#ae8704] hover:text-white cursor-pointer transition w-full h-9"
+                    >
+                      Add To Cart <i className="bi bi-cart"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Products Grid */}
@@ -236,7 +243,6 @@ const Products = ({ allProducts }: { allProducts: any[] }) => {
                         className="object-contain mt-10"
                       />
 
-                      {/* Wishlist */}
                       <div
                         onClick={() => handleAddToWishlist(product)}
                         className="absolute top-0 left-0 w-[50px] h-[50px] rounded-full bg-[#d4e2e4] text-[var(--prim-color)] flex justify-center items-center hover:bg-[var(--prim-color)] hover:text-white transition-all duration-300"
@@ -244,7 +250,6 @@ const Products = ({ allProducts }: { allProducts: any[] }) => {
                         <i className="bi bi-balloon-heart text-xl"></i>
                       </div>
 
-                      {/* ⭐ FIXED BADGE */}
                       <span
                         className={`absolute off-product top-0 right-0 px-4 py-2 Merienda text-xs font-bold text-white rounded ${
                           product.sale?.toLowerCase() === "new"
@@ -294,7 +299,6 @@ const Products = ({ allProducts }: { allProducts: any[] }) => {
                         </div>
                       </Link>
 
-                      {/* Add to cart */}
                       <button
                         onClick={() => handleAddToCart(product)}
                         className="mt-4 px-4 font-semibold text-white bg-[#b8c6c8] rounded-md text-md hover:bg-[#2b5960] hover:text-white cursor-pointer transition w-full h-10"
