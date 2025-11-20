@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Products from "./Products/page";
-import ProductDetails from "./ProductDetails/page";
+import ProductDetails from "./ProductDetails/ProductDetails";
 
 const ShopHandler = ({ allProducts }: { allProducts: any[] }) => {
   const searchParams = useSearchParams();
@@ -11,7 +11,7 @@ const ShopHandler = ({ allProducts }: { allProducts: any[] }) => {
   return productId ? (
     <ProductDetails id={productId} products={allProducts} />
   ) : (
-    <Products />
+    <Products allProducts={allProducts} />
   );
 };
 
