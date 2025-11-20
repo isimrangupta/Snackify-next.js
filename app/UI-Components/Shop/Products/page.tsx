@@ -205,7 +205,7 @@ const Products = () => {
               <div className="space-y-1  product-info">
                 <Link
                   href={{
-                    pathname: "/UI-Components/Shop/ProductDetail",
+                    pathname: "/UI-Components/Shop/ProductDetails",
                     query: { id: randomProduct.Id },
                   }}
                   className="flex-1"

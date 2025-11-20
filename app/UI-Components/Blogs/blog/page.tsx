@@ -1,7 +1,5 @@
 "use client";
-
 import blogData from "@/app/JsonData/Blogs.json";
-import Link from "next/link";
 
 const Blogs = () => {
   return (

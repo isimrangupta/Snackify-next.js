@@ -11,10 +11,10 @@ import Recommend from "@/app/JsonData/Recommend.json";
 import ShortProducts from "@/app/JsonData/ShortProducts.json";
 import HotDetail from "@/app/JsonData/HotDetail.json";
 
-import ProductDetail from "./ProductDetails/page";
+
 import Products from "./Products/page";
-
-
+import { Suspense } from "react";
+import ProductDetails from "./ProductDetails/page";
 
 const ShopPage = () => {
   const allProducts = [
@@ -34,14 +34,16 @@ const ShopPage = () => {
   const productId = searchParms.get("id");
 
   return (
-    <div className="">
+  <Suspense fallback={<div>Loading...</div>}>
+    <div>
       {productId ? (
-        <ProductDetail id={productId} products={allProducts} />
+        <ProductDetails id={productId} products={allProducts} />
       ) : (
         <Products />
       )}
     </div>
-  );
+  </Suspense>
+);
 };
 
 export default ShopPage;

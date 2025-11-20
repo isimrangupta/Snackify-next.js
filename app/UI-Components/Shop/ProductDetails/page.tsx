@@ -1,12 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { StaticImageData } from "next/image";
-
-import Deals from "../../Index/Deals/Deals";
 
 import toast from "react-hot-toast";
-import Link from "next/link";
 
 interface ProductType {
   Id: string;
@@ -24,7 +20,7 @@ interface Props {
   products: ProductType[];
 }
 
-const ProductDetail = ({ id, products }: Props) => {
+const ProductDetails = ({ id, products }: Props) => {
   if (!id) {
     return (
       <div>
@@ -161,4 +157,4 @@ const ProductDetail = ({ id, products }: Props) => {
   );
 };
 
-export default ProductDetail;
+export default ProductDetails;

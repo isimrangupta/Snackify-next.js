@@ -1,6 +1,4 @@
 "use client";
-
-import { calculateSize } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
