@@ -1,8 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-// All json Data
+// All JSON Data
 import BestDeals from "@/app/JsonData/BestDeals.json";
 import Arrivals from "@/app/JsonData/Arrivals.json";
 import BestSales from "@/app/JsonData/BestSales.json";
@@ -11,9 +12,7 @@ import Recommend from "@/app/JsonData/Recommend.json";
 import ShortProducts from "@/app/JsonData/ShortProducts.json";
 import HotDetail from "@/app/JsonData/HotDetail.json";
 
-
 import Products from "./Products/page";
-import { Suspense } from "react";
 import ProductDetails from "./ProductDetails/page";
 
 const ShopPage = () => {
@@ -34,16 +33,16 @@ const ShopPage = () => {
   const productId = searchParms.get("id");
 
   return (
-  <Suspense fallback={<div>Loading...</div>}>
-    <div>
-      {productId ? (
-        <ProductDetails id={productId} products={allProducts} />
-      ) : (
-        <Products />
-      )}
-    </div>
-  </Suspense>
-);
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        {productId ? (
+          <ProductDetails id={productId} products={allProducts} />
+        ) : (
+          <Products />
+        )}
+      </div>
+    </Suspense>
+  );
 };
 
 export default ShopPage;
