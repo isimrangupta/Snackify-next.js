@@ -1,6 +1,3 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 // All JSON Data
@@ -12,8 +9,7 @@ import Recommend from "@/app/JsonData/Recommend.json";
 import ShortProducts from "@/app/JsonData/ShortProducts.json";
 import HotDetail from "@/app/JsonData/HotDetail.json";
 
-import Products from "./Products/page";
-import ProductDetails from "./ProductDetails/page";
+import ShopHandler from "./ShopHandler";
 
 const ShopPage = () => {
   const allProducts = [
@@ -29,18 +25,9 @@ const ShopPage = () => {
     ...(ShortProducts?.TopRated || []),
   ];
 
-  const searchParms = useSearchParams();
-  const productId = searchParms.get("id");
-
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div>
-        {productId ? (
-          <ProductDetails id={productId} products={allProducts} />
-        ) : (
-          <Products />
-        )}
-      </div>
+      <ShopHandler allProducts={allProducts} />
     </Suspense>
   );
 };
