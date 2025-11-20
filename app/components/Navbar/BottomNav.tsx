@@ -17,7 +17,7 @@ const navLinks: NavLink[] = [
     href: "/UI-Components/Shop",
     dropdown: [
       { label: "Shop", href: "/UI-Components/Shop" ,},
-      { label: "Shop Details", href: "/UI-Components/Shop/ProductDetails?id=1" },
+      { label: "Shop Details", href: "/UI-Components/Shop?id=" },
     ],
   },
 
@@ -34,11 +34,7 @@ const navLinks: NavLink[] = [
 
   {
     label: "Blog",
-    href: "#",
-    dropdown: [
-      { label: "Blog", href: "/UI-Components/Blogs" },
-      { label: "Blog Details", href: "/UI-Components/Blogs/blogDetails?id=1" },
-    ],
+    href: "/UI-Components/Blogs",
   },
 
   { label: "Contact Us", href: "/UI-Components/Pages/contact" },
@@ -234,7 +230,8 @@ const BottomNav = () => {
                           >
                             {item.label}
                           </Link>
-                        ) : item.label === "Blog Details" ? (
+                        ) : 
+                        item.label === "Blog Details" ? (
                           <Link
                             key={item.label}
                             href={{
@@ -245,7 +242,8 @@ const BottomNav = () => {
                           >
                             {item.label}
                           </Link>
-                        ) : (
+                        )
+                         : (
                           <Link
                             key={item.label}
                             href={item.href}

@@ -1,33 +1,9 @@
 "use client";
 
 import blogData from "@/app/JsonData/Blogs.json";
-import { useState } from "react";
-import BlogDetails from "../blogDetails/page";
 import Link from "next/link";
 
-const categories = [
-  "Fruits & Vegetables",
-  "Dairy & Bakery",
-  "Snacks & Beverages",
-  "Staples",
-  "Frozen & Packaged Food",
-  "Personal Care",
-  "Household Essentials",
-];
-
 const Blogs = () => {
-  const [selectedBlog, setSelectedBlog] = useState<number | null>(null);
-
-  // If user clicks on Recent Post
-  if (selectedBlog !== null) {
-    return (
-      <BlogDetails
-        blog={blogData[selectedBlog]}
-        goBack={() => setSelectedBlog(null)}
-      />
-    );
-  }
-
   return (
     <>
       {/* Top Header */}
@@ -36,7 +12,7 @@ const Blogs = () => {
           <h2 className="Unbounded text-2xl">Blog</h2>
           <div className="flex">
             <h2 className="Unbounded text-2xl text-[var(--prim-color)]">
-              &nbsp; Blog
+              Blog
             </h2>
           </div>
         </div>
@@ -45,15 +21,12 @@ const Blogs = () => {
       {/* Blog Section */}
       <div className="px-[8%] lg:px-[12%] py-5 mt-10">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-5">
-          <div className="w-full lg:w-2/3 gap-5">
+          
+          {/* LEFT SIDE : BLOG LIST */}
+          <div className="w-full lg:w-2/3 gap-5 ">
             {blogData.map((blog) => (
-              <Link
-                key={blog.id}
-                href={{
-                  pathname: "/UI-components/Blogs/blogDetails",
-                  query: { id: blog.id },
-                }}
-                className="flex flex-col gap-5 mb-10 cursor-pointer"
+              <div key={blog.id}
+                className="flex flex-col gap-5 mb-10"
               >
                 {/* Blog Image */}
                 <div className="blog-image overflow-hidden rounded-md">
@@ -80,7 +53,7 @@ const Blogs = () => {
 
                   <div className="flex mt-5 gap-5">
                     <p className="text-gray-500">
-                      <i className="bi bi-calender2-week text-[var(--prim-color)] pr-1"></i>
+                      <i className="bi bi-calendar2-week text-[var(--prim-color)] pr-1"></i>
                       {blog.date}
                     </p>
 
@@ -90,11 +63,11 @@ const Blogs = () => {
                     </p>
                   </div>
                 </div>
-              </Link>
+               </div>
             ))}
           </div>
 
-          {/* Sidebar */}
+          {/* RIGHT SIDE : SIDEBAR */}
           <div className="w-full lg:w-1/2 gap-5 sticky top-22 left-0 h-[100%]">
             <div className="border border-gray-300 rounded">
 
@@ -108,8 +81,7 @@ const Blogs = () => {
                 {blogData.map((blog, index) => (
                   <div
                     key={index}
-                    className="flex justify-between items-center mb-5 gap-5 cursor-pointer"
-                    onClick={() => setSelectedBlog(index)}
+                    className="flex justify-between items-center mb-5 gap-5"
                   >
                     <div className="w-1/2">
                       <img src={blog.image} alt={blog.title} />
@@ -123,13 +95,12 @@ const Blogs = () => {
 
                         <div className="flex gap-5 mt-2">
                           <p className="text-gray-500">
-                            <i className="bi bi-calender2-week text-[var(--prim-color)] pr-1"></i>
+                            <i className="bi bi-calendar2-week text-[var(--prim-color)] pr-1"></i>
                             {blog.date}
                           </p>
                         </div>
                       </div>
                     </div>
-
                   </div>
                 ))}
               </div>
