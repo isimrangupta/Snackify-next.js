@@ -81,7 +81,7 @@ const BottomNav = () => {
   return (
     <div
       className={`w-full bg-white shadow-sm transition-all duration-500 ${
-        isFixed ? "fixed top-0 left-0 z-50 " : ""
+        isFixed ? "fixed fixed-nav top-0 left-0 z-50 " : "nav-hight-fix"
       }`}
     >
       <div className="flex items-center justify-between px-[8%] lg:px-[12%] text-gray-700">
