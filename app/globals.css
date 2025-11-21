@@ -41,13 +41,32 @@
   color: var(--prim-color);
 }
 
-.fixed-nav {
+/* .fixed-nav {
   animation: anim-fixed var(--transition-slow) forwards linear;
   box-shadow: 0 2px 10px rgba(131, 131, 131, 0.6);
 }
 
 .fixed-nav .nav-button {
   padding: 25px 20px !important;
+} */
+
+.fixed-nav {
+  animation: anim-fixed var(--transition-slow) forwards linear;
+  box-shadow: 0 2px 10px rgba(131, 131, 131, 0.6);
+}
+
+/* Yeh desktop ke liye hoga ( > 768px ) */
+@media (min-width: 768px) {
+  .fixed-nav .nav-button {
+    padding: 25px 20px !important;
+  }
+}
+
+/* Mobile ke liye normal padding rahi */
+@media (max-width: 767px) {
+  .fixed-nav .nav-button {
+    padding: 12px 12px !important;
+  }
 }
 
 @keyframes anim-fixed {
