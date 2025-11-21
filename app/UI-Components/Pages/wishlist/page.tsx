@@ -98,15 +98,17 @@ const Wishlist = () => {
   return (
     <>
       <div className="px-[8%] lg:px-[12%] bg-[#E6F9EF] py-5">
-        <div className="flex justify-between items-center">
-          <h2 className="Unbounded text-2xl">Wishlist</h2>
-          <div className="flex">
-            <Link href="/" className="text-2xl Unbounded">
-              Home &nbsp; :
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+          <h2 className="Unbounded text-2xl md:text-3xl">Wishlist!</h2>
+
+          <div className="flex flex-wrap items-center text-lg md:text-2xl">
+            <Link href="/" className="Unbounded">
+              Home&nbsp;:
             </Link>
-            <h2 className="Unbounded text-2xl text-[var(--prim-color)]">
-              &nbsp; Wishlist
-            </h2>
+
+            <span className="Unbounded text-[var(--prim-color)]">
+              &nbsp;Wishlist!
+            </span>
           </div>
         </div>
       </div>

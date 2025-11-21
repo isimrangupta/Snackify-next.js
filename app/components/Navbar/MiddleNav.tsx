@@ -98,15 +98,15 @@ const MiddleNav = () => {
 
 
         {/* Search */}
-        <div className="flex flex-1 ms-6 lg:mx-0 max-w-xl relative">
+        <div className="flex w-full sm:flex-1 sm:ms-6 lg:mx-0 max-w-full sm:w-xl relative">
           <input
             type="text"
             placeholder="Search for product on Brand"
-            className="flex-1 border px-3 py-2 rounded-s-lg border-gray-500 outline-none text-gray-300"
+            className="w-full sm:flex-1 border px-3 py-2 rounded-s-lg border-gray-500 outline-none text-gray-300"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="bg-[var(--prim-color)] text-white px-3 rounded-r cursor-pointer">
+          <button className="bg-[var(--prim-color)] text-white px-4 rounded-r cursor-pointer">
             <i className="bi bi-search"></i>
           </button>
           

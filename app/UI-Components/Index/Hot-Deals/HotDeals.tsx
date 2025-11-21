@@ -65,7 +65,7 @@ const HotDeals = () => {
 
   return (
     <>
-      <div className="px-[8%] lg:px-[12%] pb-10">
+      <div className="px-[8%] lg:px-[12%] pb-10 ">
         <div className="title my-10 w-full flex flex-col lg:flex-row justify-between items-start gap-5">
           <h1 className="text-5xl Unbounded">Today's Hot Deals.</h1>
         </div>
