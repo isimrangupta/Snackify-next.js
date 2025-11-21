@@ -41,47 +41,30 @@
   color: var(--prim-color);
 }
 
-/* Fixed Navbar */
-.fixed-nav {
-  padding: 8px 0 !important;
-  background: #fff;
+.fixed{
+  background: ffff;
   z-index: 9999;
-  animation: anim-fixed var(--transition-slow) forwards linear;
-  box-shadow: 0 1px 6px rgba(131, 131, 131, 0.4);
 }
 
-/* Button padding – mobile friendly */
+/* .fixed-nav .nav-button {
+  padding: 25px 20px !important;
+} */
+
 .fixed-nav .nav-button {
-  padding: 6px 10px !important;
+  padding: 10px 14px !important;
 }
 
-/* Desktop adjustments */
-@media (min-width: 768px) {
-  .fixed-nav {
-    padding: 10px 0 !important;
-  }
-  .fixed-nav .nav-button {
-    padding: 10px 14px !important;
-  }
-}
-
-/* Normal height */
 .nav-height-fix {
-  padding: 6px 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
-@media (min-width: 768px) {
-  .nav-height-fix {
-    padding: 10px 0;
-  }
-}
-
-/* Animation */
 @keyframes anim-fixed {
   0% {
     transform: translateY(-100px);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0px);
     opacity: 1;
