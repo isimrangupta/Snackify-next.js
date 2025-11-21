@@ -155,7 +155,7 @@ const BottomNav = () => {
         </button>
 
         {/* Mobile Nav header */}
-        <div className="lg:hidden flex items-center  gap-4 ">
+        <div className="lg:hidden flex items-center justify-evenly gap-4 ">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-2xl focus:outline-none"
