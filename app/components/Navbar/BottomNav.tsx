@@ -16,7 +16,7 @@ const navLinks: NavLink[] = [
     label: "Shop",
     href: "/UI-Components/Shop",
     dropdown: [
-      { label: "Shop", href: "/UI-Components/Shop" ,},
+      { label: "Shop", href: "/UI-Components/Shop" },
       { label: "Shop Details", href: "/UI-Components/Shop?id=" },
     ],
   },
@@ -80,7 +80,7 @@ const BottomNav = () => {
 
   return (
     <div
-      className={`w-full bg-white shadow-sm transition-all duration-500 ${
+      className={`w-full bg-white shadow-sm nav-height-fix transition-all duration-500 ${
         isFixed ? "fixed top-0 left-0 z-50 fixed-nav" : ""
       }`}
     >
@@ -146,8 +146,6 @@ const BottomNav = () => {
             )
           )}
         </nav>
-
-        
 
         <button className="nav-button cursor-pointer font-bold bg-[var(--prim-color)] text-white p-3 hidden lg:flex">
           <i className="bi bi-telephone pe-2 text-xl"></i>
@@ -230,8 +228,7 @@ const BottomNav = () => {
                           >
                             {item.label}
                           </Link>
-                        ) : 
-                        item.label === "Blog Details" ? (
+                        ) : item.label === "Blog Details" ? (
                           <Link
                             key={item.label}
                             href={{
@@ -242,8 +239,7 @@ const BottomNav = () => {
                           >
                             {item.label}
                           </Link>
-                        )
-                         : (
+                        ) : (
                           <Link
                             key={item.label}
                             href={item.href}
