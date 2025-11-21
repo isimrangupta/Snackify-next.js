@@ -155,7 +155,7 @@ const BottomNav = () => {
         </button>
 
         {/* Mobile Nav header */}
-        <div className="lg:hidden flex items-center justify-evenly gap-4 w-full">
+        <div className="lg:hidden flex items-center  gap-4 ">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-2xl focus:outline-none"
@@ -187,8 +187,8 @@ const BottomNav = () => {
               )}
             </Link>
           </div>
-          <button className="nav-button cursor-pointer font-bold bg-[var(--prim-color)] text-white p-3">
-            <i className="bi bi-telephone pe-2 text-xl"></i>
+          <button className="nav-button cursor-pointer font-bold bg-[var(--prim-color)] text-white p-3 text-center">
+            <i className="bi bi-telephone pe-2 text-xl "></i>
             91+ 123 456 789
           </button>
         </div>
@@ -196,7 +196,7 @@ const BottomNav = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#758687] text-white border-t border-gray-200 shadow-md overflow-hidden transition-all duration-500 pl-4">
+        <div className="lg:hidden bg-[#758687] text-white border-t border-gray-200 shadow-md overflow-hidden transition-all duration-500 pl-4 ">
           <nav className="flex flex-col items-start px[4%] py-4 space-y-1">
             {navLinks.map((link) =>
               link.dropdown ? (
