@@ -44,9 +44,7 @@ const Category = () => {
         spaceBetween={20}
         loop={true}
         modules={[Autoplay]}
-        autoplay={{
-          delay: 1500,
-        }}
+        autoplay={{ delay: 1500 }}
         speed={1500}
         breakpoints={{
           1200: { slidesPerView: 8 },
@@ -57,21 +55,43 @@ const Category = () => {
         }}
       >
         {categories.map((category, index) => (
-          <SwiperSlide key={index} className="! px-2">
+          <SwiperSlide key={index} className="px-4">
             <div className="category-wrap flex flex-col justify-center items-center cursor-pointer">
-              <div className="category-image">
+
+              {/* MOBILE + DESKTOP RESPONSIVE CIRCLE */}
+              <div
+                className="
+                  category-image 
+                  w-20 h-20            /* Desktop */
+                  md:w-16 md:h-16      /* Tablet */
+                  sm:w-14 sm:h-14      /* Mobile */
+                  rounded-full 
+                  overflow-hidden 
+                  bg-white 
+                  flex justify-center items-center 
+                  shadow
+                "
+              >
                 <Image
-                src={category.image}
-                alt={category.title}
-                className="transition-all duration-300"
+                  src={category.image}
+                  alt={category.title}
+                  className="
+                    object-contain 
+                    w-16 h-16        /* Desktop */
+                    md:w-12 md:h-12  /* Tablet */
+                    sm:w-10 sm:h-10  /* Mobile */
+                    transition-all duration-300
+                  "
                 />
               </div>
+
               <div className="category-info my-2 flex flex-col justify-center items-center">
                 <h2 className="text-lg Unbounded hover:text-[var(--prim-color)] transition-all duration-300">
-{category.title}
+                  {category.title}
                 </h2>
                 <p className="text-gray-500">{category.products}</p>
               </div>
+
             </div>
           </SwiperSlide>
         ))}
