@@ -23,8 +23,21 @@ const Checkout = () => {
     setCartItems(saveCart);
   }, []);
 
-  const handlePlaceOrder = () => {
-    toast.success("Order Placed SuccessFully!");
+  const handlePlaceOrder = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Success Toast
+    toast.success("Order Placed Successfully!");
+
+    // Form reset
+    const form = e.currentTarget;
+    form.reset();
+
+    // Reset delivery option to default
+    setDeliveryOption("ship");
+
+    // Optional: Clear cart after order
+    // setCartItems([]);
   };
 
   const totalPrice = cartItems.reduce((acc, item) => {
@@ -37,6 +50,7 @@ const Checkout = () => {
 
   return (
     <>
+      {/* TOP HEADER */}
       <div className="px-[8%] lg:px-[12%] bg-[#E6F9EF] py-5">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
           <h2 className="Unbounded text-2xl md:text-3xl">Checkout!</h2>
@@ -53,13 +67,18 @@ const Checkout = () => {
         </div>
       </div>
 
-      <div className="px-[8%] lg:px-[12%] py-10">
+      <form
+        onSubmit={handlePlaceOrder}
+        className="px-[8%] lg:px-[12%] py-10"
+      >
         <div className="grid gap-4 lg:grid-cols-12">
-          {/* Left: Checkout */}
+          {/* LEFT SECTION */}
           <div className="lg:col-span-7">
             <h5 className="mb-2 Unbounded text-2xl">Contact</h5>
+
             <input
-              type="email"
+              type="text"
+              required
               className="border border-gray-300 rounded w-full p-2 mb-3"
               placeholder="Email or Mobile Phone number"
             />
@@ -77,6 +96,7 @@ const Checkout = () => {
                   name="deliveryoption"
                   checked={deliveryOption === "ship"}
                   onChange={() => setDeliveryOption("ship")}
+                  required
                 />
                 Ship
               </label>
@@ -87,6 +107,7 @@ const Checkout = () => {
                   name="deliveryoption"
                   checked={deliveryOption === "pickup"}
                   onChange={() => setDeliveryOption("pickup")}
+                  required
                 />
                 Pickup in store
               </label>
@@ -94,41 +115,35 @@ const Checkout = () => {
 
             {deliveryOption === "ship" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                <select className="font-select border border-gray-300 rounded w-full p-2 appearance-none px-2 py-2 md:col-span-2">
-                  <option value="">Vietnam</option>
-                  <option value="">France</option>
-                  <option value="">United States</option>
+                <select
+                  className="border border-gray-300 rounded w-full p-2 md:col-span-2"
+                  required
+                >
+                  <option value="">Select Country</option>
+                  <option value="Vietnam">Vietnam</option>
+                  <option value="France">France</option>
+                  <option value="USA">United States</option>
                 </select>
 
                 <input
                   type="text"
+                  required
                   className="border border-gray-300 rounded w-full p-2"
-                  placeholder="First Name (Optional)"
+                  placeholder="First Name"
                 />
 
                 <input
                   type="text"
+                  required
                   className="border border-gray-300 rounded w-full p-2"
-                  placeholder="Last Name (Optional)"
+                  placeholder="Last Name"
                 />
-              </div>
-            )}
-
-            {deliveryOption === "pickup" && (
-              <div className="my-4 pl-3 border bg-red-50 text-red-700 rounded">
-                <strong>No Stores Available with your item</strong>
-
-                <div>
-                  <Link href="#" className="underline">
-                    Ship to address
-                  </Link>{" "}
-                  insted
-                </div>
               </div>
             )}
 
             <input
               type="text"
+              required
               className="border border-gray-300 rounded w-full p-2"
               placeholder="Address"
             />
@@ -136,21 +151,23 @@ const Checkout = () => {
             <input
               type="text"
               className="border border-gray-300 rounded w-full p-2 mb-3"
-              placeholder="Apartment suite,etc. (optional)"
+              placeholder="Apartment suite, etc. (optional)"
             />
 
-            {/* City, Postal, Save info */}
+            {/* City + Postal */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
               <input
                 type="text"
+                required
                 className="border border-gray-300 rounded w-full p-2"
                 placeholder="City"
               />
 
               <input
                 type="text"
+                required
                 className="border border-gray-300 rounded w-full p-2"
-                placeholder="Postal Code . (optional)"
+                placeholder="Postal Code"
               />
 
               <div className="mb-4 w-full md:col-span-2">
@@ -161,22 +178,20 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Shipping full width */}
+            {/* SHIPPING */}
             <h5 className="mb-2 Unbounded text-2xl">Shipping Method</h5>
             <div className="p-3 flex justify-between items-center border border-gray-300 rounded bg-blue-50 w-full mb-4">
               <span>Standard</span>
               <span className="text-green-600">FREE</span>
             </div>
 
+            {/* PAYMENT */}
             <h4 className="mt-5 mb-2 Unbounded text-2xl">Payment</h4>
-
-            <p className="text-gray-500 mb-3">
-              All transactions are secure and encrypted.
-            </p>
 
             <div className="border border-gray-300 rounded p-3 mb-3">
               <input
                 type="text"
+                required
                 className="border border-gray-300 rounded w-full p-2 mb-2"
                 placeholder="Card number"
               />
@@ -184,46 +199,49 @@ const Checkout = () => {
               <div className="grid grid-cols-2 gap-2">
                 <input
                   type="text"
+                  required
                   className="border border-gray-300 rounded w-full p-2"
                   placeholder="Expiration date (MM / YY)"
                 />
 
                 <input
                   type="text"
+                  required
                   className="border border-gray-300 rounded w-full p-2"
                   placeholder="Security Code"
                 />
               </div>
+
               <input
                 type="text"
-                className="border border-r-gray-300 rounded w-full p-2 mt-2"
+                required
+                className="border border-gray-300 rounded w-full p-2 mt-2"
                 placeholder="Name on card"
               />
             </div>
 
             <button
+              type="submit"
               disabled={totalPrice === 0}
-              className={`w-full py-2 text-white rounded transition
-    ${
-      totalPrice === 0
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-[var(--prim-color)] hover:bg-gray-700 cursor-pointer"
-    }
-  `}
-              onClick={handlePlaceOrder}
+              className={`w-full py-2 text-white rounded transition ${
+                totalPrice === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[var(--prim-color)] hover:bg-gray-700 cursor-pointer"
+              }`}
             >
               Pay Now
             </button>
           </div>
 
-          {/* Right Order Summary */}
+          {/* RIGHT SIDE */}
           <div className="lg:col-span-5">
             <div className="border border-gray-300 p-4 rounded shadow">
               <h5 className="font-bold mb-3 flex items-center gap-2 Unbounded">
-                <i className="ri-shopping-cart-2-line text-[var(--prim-color)]">
-                  Order Summary
-                </i>
+                <i className="ri-shopping-cart-2-line text-[var(--prim-color)]"></i>
+                Order Summary
               </h5>
+
+              {/* ITEMS */}
               {cartItems.length === 0 ? (
                 <p className="text-gray-500">Your Cart is Empty!</p>
               ) : (
@@ -252,14 +270,10 @@ const Checkout = () => {
                 })
               )}
 
+              {/* TOTALS */}
               <div className="flex justify-between text-sm pt-2">
                 <span>Subtotal</span>
                 <span className="Unbounded">${totalPrice.toFixed(2)}</span>
-              </div>
-
-              <div className="flex justify-between text-sm pt-2">
-                <span>Shipping</span>
-                <span>Enter address</span>
               </div>
 
               <div className="flex justify-between text-sm pt-2">
@@ -267,26 +281,19 @@ const Checkout = () => {
                 <span className="Unbounded">${estimatedTax}</span>
               </div>
 
-              <div className="flex justify-between text-sm pt-2">
-                <span>Total</span>
-                <span className="Unbounded">
-                  ${(totalPrice + parseFloat(estimatedTax)).toFixed(2)}
-                </span>
-              </div>
-
+              {/* PLACE ORDER BUTTON */}
               <button
+                type="submit"
                 disabled={totalPrice === 0}
-                className={`w-full mt-3 mb-3 py-2 text-white rounded transition
-                   ${
-                     totalPrice === 0
-                       ? "bg-gray-400 cursor-not-allowed"
-                       : "bg-green-600 hover:bg-green-800 cursor-pointer"
-                   }
-                `}
-                onClick={handlePlaceOrder}
+                className={`w-full mt-3 mb-3 py-2 text-white rounded transition ${
+                  totalPrice === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-800 cursor-pointer"
+                }`}
               >
                 Place Order
               </button>
+
               <Link
                 href="/UI-Components/Pages/cart"
                 className="block text-center py-2 border rounded hover:bg-gray-100 transition"
@@ -296,7 +303,7 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 };
