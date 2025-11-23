@@ -9,10 +9,45 @@ import products from "@/app/JsonData/HotDetail.json";
 
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import hotDealBanner from "@/public/hot-deals-img.png";
 
 const HotDeals = () => {
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    setWishlistItems(saved.map((item: any) => item.Id));
+  }, []);
+
+  const handleAddToWishlist = (product: any) => {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+
+    const exists = wishlist.find((item: any) => item.Id === product.Id);
+
+    if (exists) {
+   
+      wishlist = wishlist.filter((item: any) => item.Id !== product.Id);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+      setWishlistItems((prev) => prev.filter((id) => id !== product.Id));
+
+      toast(`${product.title} removed from wishlist`, {
+        icon: "❌",
+        style: { border: "1px solid red", padding: "14px", background: "#ffe6e6" }
+      });
+    } else {
+      // ADD
+      wishlist.push(product);
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+      setWishlistItems((prev) => [...prev, product.Id]);
+
+      toast.success(`${product.title} added to wishlist!`);
+    }
+  };
+
   const handleAddToCart = (product: any) => {
     let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -34,32 +69,6 @@ const HotDeals = () => {
       window.dispatchEvent(new Event("storageUpdate"));
 
       toast.success(`${product.title} added to cart!`);
-    }
-  };
-
-  const handleAddToWishlist = (product: any) => {
-    let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-
-    const existingProduct = wishlist.find(
-      (item: any) => item.Id === product.Id
-    );
-
-    if (existingProduct) {
-      toast(`${product.title} is already in the wishlist`, {
-        icon: "⚠️",
-        style: {
-          border: "1px solid #facc15",
-          padding: "16px",
-          color: "#333",
-          background: "#fff9c4",
-        },
-      });
-    } else {
-      wishlist.push({ ...product, qty: 1 });
-      localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      window.dispatchEvent(new Event("storageUpdate"));
-
-      toast.success(`${product.title} added to wishlist!`);
     }
   };
 
@@ -105,10 +114,9 @@ const HotDeals = () => {
             >
               {products.map((product) => (
                 <SwiperSlide key={product.Id}>
-                  <div
-                    className="product-wrap border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md 
-                    transition-all hover:border-[var(--prim-color)] duration-300 flex flex-col justify-between h-full"
-                  >
+                  <div className="product-wrap border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md 
+                    transition-all hover:border-[var(--prim-color)] duration-300 flex flex-col justify-between h-full">
+
                     {/* Image Section */}
                     <div className="relative flex justify-center items-center w-full h-[180px]">
                       <Image
@@ -117,15 +125,19 @@ const HotDeals = () => {
                         width={180}
                         height={180}
                         className="object-contain"
-                        style={{ width: "auto", height: "auto" }}
                       />
 
                       <div
                         onClick={() => handleAddToWishlist(product)}
-                        className="absolute top-0 left-0 w-[50px] h-[50px] rounded-full bg-[#d4e2e4] 
-                        text-[var(--prim-color)] flex justify-center items-center"
+                        className={`absolute top-0 left-0 w-[50px] h-[50px] rounded-full flex justify-center items-center cursor-pointer
+                          ${
+                            wishlistItems.includes(product.Id)
+                              ? "bg-green-500 text-white"
+                              : "bg-[#d4e2e4] text-[var(--prim-color)]"
+                          }
+                        `}
                       >
-                        <i className="bi bi-balloon-heart text-xl cursor-pointer"></i>
+                        <i className="bi bi-balloon-heart text-xl"></i>
                       </div>
 
                       <span
@@ -141,7 +153,6 @@ const HotDeals = () => {
                       </span>
                     </div>
 
-                    {/* Product Info */}
                     <div className="mt-5 flex-1">
                       <Link
                         href={{
@@ -180,7 +191,6 @@ const HotDeals = () => {
                       </Link>
                     </div>
 
-                    {/* Add to Cart Button at Bottom */}
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="mt-4 px-4 py-2 font-semibold text-white bg-[#789a9e] rounded-md 

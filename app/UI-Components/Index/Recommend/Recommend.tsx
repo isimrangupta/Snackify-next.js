@@ -1,12 +1,18 @@
 "use client";
 import Image from "next/image";
-
 import products from "@/app/JsonData/Recommend.json";
-
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Recommend = () => {
+  const [wishlistItems, setWishlistItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    setWishlistItems(wishlist);
+  }, []);
+
   const handleAddToCart = (product: any) => {
     let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -51,7 +57,7 @@ const Recommend = () => {
     } else {
       wishlist.push({ ...product, qty: 1 });
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
-      window.dispatchEvent(new Event("storageUpdate"));
+      setWishlistItems(wishlist);
 
       toast.success(`${product.title} added to wishlist!`);
     }
@@ -66,83 +72,98 @@ const Recommend = () => {
       {/* Products */}
       <div className="my-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {products.map((product) => (
-            <div
-              key={product.Id}
-              className="product-wrap border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-all hover:border-[var(--prim-color)] cursor-pointer duration-300"
-            >
-              <div className="relative flex justify-center items-center w-full h-50">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  width={150}
-                  height={150}
-                  className="object-contain mt-10"
-                />
+          {products.map((product) => {
+            const isInWishlist = wishlistItems.some(
+              (item) => item.Id === product.Id
+            );
 
-                <div
-                  onClick={() => handleAddToWishlist(product)}
-                  className="absolute top-0 left-0 w-[50px] h-[50px] rounded-full bg-[#d4e2e4] text-[var(--prim-color)] flex justify-center items-center hover:bg-[var(--prim-color)] hover:text-white transition-all duration-300"
-                >
-                  <i className="bi bi-balloon-heart text-xl"></i>
-                </div>
-                <span
-                  className={`absolute off-product top-0 right-0 px-4 py-2 Merienda text-xs font-bold text-white rounded ${
-                    product.sale === "New"
-                      ? "bg-yellow-400"
-                      : product.sale.includes("%")
-                      ? "bg-red-500"
-                      : "opacity-0"
-                  }`}
-                >
-                  {product.sale}
-                </span>
-              </div>
-
-             <div className="space-y-1 mt-5 product-info">
-               <Link
-                href={{
-                  pathname: "/UI-components/Shop",
-                  query: { id: product.Id },
-                }}
-                className="flex-1"
+            return (
+              <div
+                key={product.Id}
+                className="product-wrap border border-gray-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-all hover:border-[var(--prim-color)] cursor-pointer duration-300"
               >
-                <div className="space-y-1 mt-5 product-info">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 text-sm line-through">
-                      {product.lessprice}
-                    </span>
-                    <span className="text-xl font-semibold">
-                      {product.price}
-                    </span>
-                    <span className="text-gray-500 text-sm">Qty</span>
+                <div className="relative flex justify-center items-center w-full h-50">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    width={150}
+                    height={150}
+                    className="object-contain mt-10"
+                  />
+
+                  <div
+                    onClick={() => handleAddToWishlist(product)}
+                    className={`absolute top-0 left-0 w-[50px] h-[50px] rounded-full flex justify-center items-center transition-all duration-300 
+                      ${
+                        isInWishlist
+                          ? "bg-green-500 text-white"
+                          : "bg-[#d4e2e4] text-[var(--prim-color)] hover:bg-[var(--prim-color)] hover:text-white"
+                      }
+                    `}
+                  >
+                    <i className="bi bi-balloon-heart text-xl"></i>
                   </div>
-                  <span className="flex items-center text-yellow-500 font-medium">
-                    <i className="bi bi-star-fill me-1">{product.review}</i>
-                  </span>
-                  <h2 className="text-xl text-gray-500 font-normal Unbounded my-2 hover:text-[var(--prim-color)] transition-all duration-300">
-                    {product.title}
-                  </h2>
-                  <h6 className="text-lg text-gray-500 flex items-center gap-1">
-                    <i className="bi bi-shop text-[var(--prim-color)]"></i> By
-                    Luck Supermarket
-                  </h6>
-                  <h3 className="mt-2 Unbounded text-md text-gray-600">
-                    Sold: {product.sold}
-                  </h3>
-                </div>
-              </Link>
 
-              {/* Button always at bottom */}
-              <button
-                onClick={() => handleAddToCart(product)}
-                className="mt-4 px-4 font-semibold text-white bg-[#789a9e] rounded-md text-md hover:bg-[#2b5960] hover:text-white cursor-pointer transition w-full h-10"
-              >
-                Add To Cart <i className="bi bi-cart"></i>
-              </button>
-             </div>
-            </div>
-          ))}
+                  <span
+                    className={`absolute off-product top-0 right-0 px-4 py-2 Merienda text-xs font-bold text-white rounded ${
+                      product.sale === "New"
+                        ? "bg-yellow-400"
+                        : product.sale.includes("%")
+                        ? "bg-red-500"
+                        : "opacity-0"
+                    }`}
+                  >
+                    {product.sale}
+                  </span>
+                </div>
+
+                <div className="space-y-1 mt-5 product-info">
+                  <Link
+                    href={{
+                      pathname: "/UI-components/Shop",
+                      query: { id: product.Id },
+                    }}
+                    className="flex-1"
+                  >
+                    <div className="space-y-1 mt-5 product-info">
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-500 text-sm line-through">
+                          {product.lessprice}
+                        </span>
+                        <span className="text-xl font-semibold">
+                          {product.price}
+                        </span>
+                        <span className="text-gray-500 text-sm">Qty</span>
+                      </div>
+                      <span className="flex items-center text-yellow-500 font-medium">
+                        <i className="bi bi-star-fill me-1">
+                          {product.review}
+                        </i>
+                      </span>
+                      <h2 className="text-xl text-gray-500 font-normal Unbounded my-2 hover:text-[var(--prim-color)] transition-all duration-300">
+                        {product.title}
+                      </h2>
+                      <h6 className="text-lg text-gray-500 flex items-center gap-1">
+                        <i className="bi bi-shop text-[var(--prim-color)]"></i>{" "}
+                        By Luck Supermarket
+                      </h6>
+                      <h3 className="mt-2 Unbounded text-md text-gray-600">
+                        Sold: {product.sold}
+                      </h3>
+                    </div>
+                  </Link>
+
+                  
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="mt-4 px-4 font-semibold text-white bg-[#789a9e] rounded-md text-md hover:bg-[#2b5960] hover:text-white cursor-pointer transition w-full h-10"
+                  >
+                    Add To Cart <i className="bi bi-cart"></i>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
