@@ -38,7 +38,7 @@ const categories: CategortType[] = [
 
 const Category = () => {
   return (
-    <div className="px-[8%] lg:px-[12%] py-10">
+    <div className="px-[8%] lg:px-[12%] py-10   border border-red-600">
       <Swiper
         slidesPerView={8}
         spaceBetween={20}
@@ -57,7 +57,7 @@ const Category = () => {
         }}
       >
         {categories.map((category, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} className="! px-2">
             <div className="category-wrap flex flex-col justify-center items-center cursor-pointer">
               <div className="category-image">
                 <Image
