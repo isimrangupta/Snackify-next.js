@@ -38,7 +38,7 @@ const categories: CategortType[] = [
 
 const Category = () => {
   return (
-    <div className="px-[8%] lg:px-[12%] py-10   border border-red-600">
+    <div className="px-[8%] lg:px-[12%] py-10">
       <Swiper
         slidesPerView={8}
         spaceBetween={20}
