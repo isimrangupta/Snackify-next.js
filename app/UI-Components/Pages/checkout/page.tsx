@@ -202,7 +202,14 @@ const Checkout = () => {
             </div>
 
             <button
-              className="w-full py-2 bg-[var(--prim-color)] cursor-pointer text-white rounded hover:bg-gray-700 transition-all"
+              disabled={totalPrice === 0}
+              className={`w-full py-2 text-white rounded transition
+    ${
+      totalPrice === 0
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-[var(--prim-color)] hover:bg-gray-700 cursor-pointer"
+    }
+  `}
               onClick={handlePlaceOrder}
             >
               Pay Now
@@ -268,7 +275,14 @@ const Checkout = () => {
               </div>
 
               <button
-                className="w-full mt-3 mb-3 py-2 bg-green-600 cursor-pointer text-white rounded hover:bg-green-800 transition"
+                disabled={totalPrice === 0}
+                className={`w-full mt-3 mb-3 py-2 text-white rounded transition
+                   ${
+                     totalPrice === 0
+                       ? "bg-gray-400 cursor-not-allowed"
+                       : "bg-green-600 hover:bg-green-800 cursor-pointer"
+                   }
+                `}
                 onClick={handlePlaceOrder}
               >
                 Place Order

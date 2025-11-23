@@ -46,7 +46,7 @@ const BottomNav = () => {
 
   const [isFixed, setIsFixed] = useState(false);
 
-  const toggleDropdowm = (label: string) => {
+  const toggleDropdown = (label: string) => {
     setOpenDropdown((prev) => ({ ...prev, [label]: !prev[label] }));
   };
 
@@ -81,14 +81,14 @@ const BottomNav = () => {
   return (
     <div
       className={`w-full bg-white shadow-sm transition-all duration-500 ${
-        isFixed ? "fixed fixed-nav top-0 left-0 z-50 " : "nav-hight-fix"
+        isFixed ? "fixed fixed-nav top-0 left-0 z-50 " : ""
       }`}
     >
       <div className="flex items-center justify-between px-[8%] lg:px-[12%] text-gray-700">
         {/* Desktop Nav */}
         <Link
           href="/"
-          className={`text-3xl font-bold Meriends text-black hidden ${
+          className={`text-3xl font-bold Merienda text-black hidden ${
             isFixed ? "lg:flex" : "hidden"
           }`}
         >
@@ -155,7 +155,7 @@ const BottomNav = () => {
         </button>
 
         {/* Mobile Nav header */}
-        <div className="lg:hidden flex items-center justify-evenly gap-4 ">
+        <div className="lg:hidden flex items-center justify-between gap-4 w-full">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-2xl focus:outline-none"
@@ -197,13 +197,13 @@ const BottomNav = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#758687] text-white border-t border-gray-200 shadow-md overflow-hidden transition-all duration-500 pl-4 ">
-          <nav className="flex flex-col items-start px[4%] py-4 space-y-1">
+          <nav className="flex flex-col px-[4%] py-4 space-y-1">
             {navLinks.map((link) =>
               link.dropdown ? (
                 <div key={link.label} className="flex flex-col w-full">
                   <button
                     className="flex justify-between items-center w-full px-2 py-2 font-medium cursor-pointer "
-                    onClick={() => toggleDropdowm(link.label)}
+                    onClick={() => toggleDropdown(link.label)}
                   >
                     {link.label}
                     <i
